@@ -8,16 +8,19 @@ import LocationMap from "~/components/LocationMap";
 import Message from "~/components/Massage";
 import SectionWrapper from "~/components/Utils/SectionWrapper";
 import WelcomeModal from "~/components/WelcomeModal";
-import { indexAction, indexLoader } from "~/controls";
+import { indexAction, indexLoader, LoaderDataType } from "~/controls";
 import heroBg from "~/images/hero-bg.jpg";
 import heroBgMobile from "~/images/hero-bg-mobile.jpg";
 import MusicPlayer from "~/components/MusicPlayer";
 import GalleryPhotos from "~/components/GalleryPhotos";
+import { useLoaderData } from "remix";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const loader = indexLoader;
 export const action = indexAction;
 
 export default function Index() {
+  const { ENV } = useLoaderData<LoaderDataType>();
   const isSmallScreen = useMediaQuery({ query: `(max-width: 768px)` });
 
   const [openWelcome, setOpenWelcome] = useState(true);
@@ -84,9 +87,11 @@ export default function Index() {
         <GalleryPhotos />
       </SectionWrapper>
 
-      <SectionWrapper className="mb-36">
-        <Message />
-      </SectionWrapper>
+      <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID!}>
+        <SectionWrapper className="mb-36">
+          <Message />
+        </SectionWrapper>
+      </GoogleOAuthProvider>
 
       <SectionWrapper className="mb-36">
         <DigitalEnvelope />

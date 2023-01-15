@@ -2,6 +2,8 @@ import { Fragment, memo, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useFetcher, useLoaderData } from "remix";
 import { LoaderDataType } from "~/controls";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 const PER_PAGE = 5;
 
@@ -49,6 +51,21 @@ const Message = memo(() => {
     }
   }, [fetcher]);
 
+  const sendMessage = useGoogleLogin({
+    onSuccess: async (res) => {
+      const userInfo = await axios.get(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        {
+          headers: { Authorization: `Bearer ${res.access_token}` },
+        }
+      );
+
+      const formData = new FormData(formRef.current!);
+      formData.append("google_name", userInfo.data.name);
+      fetcher.submit(formData, { method: "post" });
+    },
+  });
+
   return (
     <div>
       <h4 className="text-3xl font-head font-bold text-center mb-10 md:mb-16 text-gray-700 px-4">
@@ -57,7 +74,13 @@ const Message = memo(() => {
       <div className="w-full flex flex-wrap">
         <div className="w-full md:w-1/2 px-4">
           <div className="rounded-lg shadow-lg p-6 md:p-8 bg-white sticky top-8 mb-6 md:mb-0">
-            <fetcher.Form replace method="post" ref={formRef}>
+            <form
+              ref={formRef}
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+            >
               <fieldset disabled={fetcher.state === "submitting"}>
                 <input
                   className="w-full bg-[#f8fafc] rounded border px-3 py-1.5 mb-6 outline-[#CE7BB0]"
@@ -76,6 +99,7 @@ const Message = memo(() => {
                 <div className="flex justify-end">
                   <button
                     type="submit"
+                    id="submit-message-btn"
                     className="px-5 py-2 transition-all text-lg font-semibold rounded-md bg-[#CE7BB0] hover:bg-[#A267AC] outline-[#6867AC] text-white outline-4 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
                   >
                     Kirim
@@ -86,7 +110,7 @@ const Message = memo(() => {
               {fetcher.data?.ok === false && (
                 <p className="pt-4 text-red-500">Gagal mengirim pesan.</p>
               )}
-            </fetcher.Form>
+            </form>
           </div>
         </div>
 

@@ -1161,6 +1161,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-shadow: var(--tw-shadow-colored);
 }
 
+.outline {
+  outline-style: solid;
+}
+
 .outline-4 {
   outline-width: 4px;
 }

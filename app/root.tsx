@@ -10,6 +10,7 @@ import type { MetaFunction, LinksFunction } from "remix";
 import styles from "./styles/app.css";
 import skeletonStyles from "react-loading-skeleton/dist/skeleton.css";
 import ogimage from "~/images/ogimage.jpg";
+import { indexAction } from "./controls";
 
 export const links: LinksFunction = () => {
   return [
@@ -54,6 +55,8 @@ export const meta: MetaFunction = () => {
       "Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu",
   };
 };
+
+export const action = indexAction;
 
 export default function App() {
   return (

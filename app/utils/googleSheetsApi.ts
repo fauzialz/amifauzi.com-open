@@ -57,7 +57,11 @@ export const getPersonRemarks = async (name?: string) => {
   }
 };
 
-export const appendMessage = async (name: string, message: string) => {
+export const appendMessage = async (
+  name: string,
+  message: string,
+  googleName: string
+) => {
   try {
     const sheets = await getSheets();
     const range = `Sheet2!A:B`;
@@ -68,7 +72,7 @@ export const appendMessage = async (name: string, message: string) => {
       range,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[name, message, serverTime, 0]],
+        values: [[name, message, serverTime, 0, googleName]],
       },
     });
 
