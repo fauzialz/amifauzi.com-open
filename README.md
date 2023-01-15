@@ -14,7 +14,7 @@ Available features:
 - Agendas section
 - Google Map section
 - Pre-wedding gallery section
-- Message section connected to Google Sheet
+- Message section connected to Google Sheet, submit button guarded by Google Sign In
 - Digital Envelope section
 - Background music Player
 
