@@ -1,11 +1,12 @@
-import { ActionFunction, json, LoaderFunction } from "remix";
+import { json } from "@remix-run/node";
 import { getClinetEnv } from "~/env.server";
 import {
   appendMessage,
   getMessage,
   getPersonRemarks,
-  MessageItemType,
 } from "~/utils/googleSheetsApi";
+import type { MessageItemType } from "~/utils/googleSheetsApi";
+import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 
 export interface LoaderDataType {
   remark: string;

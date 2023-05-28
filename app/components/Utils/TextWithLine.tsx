@@ -1,6 +1,10 @@
-import { FC } from "react";
+import type { ReactNode } from "react";
 
-const TextWithLine: FC = ({ children }) => {
+interface TextWithLineProps {
+  children?: ReactNode;
+}
+
+const TextWithLine = ({ children }: TextWithLineProps) => {
   return (
     <div className="flex items-center justify-center">
       <div className="border-t border-gray-400 w-8" />

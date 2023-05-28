@@ -18,7 +18,8 @@ const Agendas = () => {
         <a
           href={CALENDAR_URL}
           target={"_blank"}
-          className="px-8 py-4 transition-all text-lg font-semibold w-full rounded-lg bg-[#CE7BB0] hover:bg-[#A267AC] outline-[#6867AC] text-white outline-4 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+          className="px-8 py-4 transition-all text-lg font-semibold w-full rounded-lg bg-contrast hover:bg-contrast-2 outline-contrast-3 text-white outline-4 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+          rel="noreferrer"
         >
           Simpan di Kalender
         </a>

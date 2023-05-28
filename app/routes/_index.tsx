@@ -1,20 +1,57 @@
+import type { V2_MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import Agendas from "~/components/Agendas";
-import BrideAndGroom from "~/components/BrideAndGroom";
-import Countdown from "~/components/Countdown";
-import DigitalEnvelope from "~/components/DigitalEnvelope";
-import LocationMap from "~/components/LocationMap";
-import Message from "~/components/Massage";
-import SectionWrapper from "~/components/Utils/SectionWrapper";
 import WelcomeModal from "~/components/WelcomeModal";
-import { indexAction, indexLoader, LoaderDataType } from "~/controls";
+import { indexAction, indexLoader } from "~/controls";
+import type { LoaderDataType } from "~/controls";
+import { useMediaQuery } from "react-responsive";
 import heroBg from "~/images/hero-bg.jpg";
 import heroBgMobile from "~/images/hero-bg-mobile.jpg";
-import MusicPlayer from "~/components/MusicPlayer";
-import GalleryPhotos from "~/components/GalleryPhotos";
-import { useLoaderData } from "remix";
+import SectionWrapper from "~/components/Utils/SectionWrapper";
+import BrideAndGroom from "~/components/BrideAndGroom";
+import Countdown from "~/components/Countdown";
+import Agendas from "~/components/Agendas";
+import LocationMap from "~/components/LocationMap";
+import Message from "~/components/Message";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import DigitalEnvelope from "~/components/DigitalEnvelope";
+import MusicPlayer from "~/components/MusicPlayer";
+import ogimage from "~/images/ogimage.jpg";
+import GalleryPhotos from "~/components/GalleryPhotos";
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: "Undangan Pernikahan - Ami & Fauzi",
+    },
+    {
+      description:
+        "Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu",
+    },
+    {
+      "og:image": ogimage,
+    },
+    {
+      "og:image:type": "image/jpeg",
+    },
+    {
+      "og:site_name": "amifauzi",
+    },
+    { "og:url": "https://www.amifauzi.com/" },
+    { "og:title": "Undangan Pernikahan - Ami & Fauzi" },
+    {
+      "og:description": `Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu`,
+    },
+    { "og:type": "website" },
+
+    { "twitter:image": ogimage },
+    { "twitter:card": "summary_large_image" },
+    {
+      "twitter:description":
+        "Sabtu, 30 Juli 2022 di Taman Mini Perumnas Batu Galing, Bengkulu",
+    },
+  ];
+};
 
 export const loader = indexLoader;
 export const action = indexAction;
@@ -40,10 +77,12 @@ export default function Index() {
     setIsMobile(isSmallScreen);
   }, [isSmallScreen]);
 
+  const thisYear = new Date().getFullYear();
+
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}
-      className="bg-[#f9f9f9]"
+      className="bg-background-2"
     >
       <WelcomeModal isOpen={openWelcome} onClose={onCloseWelcomeModal} />
 
@@ -67,7 +106,7 @@ export default function Index() {
         </div>
       </div>
 
-      <SectionWrapper className="bg-[#EFEFEF]">
+      <SectionWrapper className="bg-background">
         <BrideAndGroom />
       </SectionWrapper>
 
@@ -89,7 +128,7 @@ export default function Index() {
 
       <GoogleOAuthProvider clientId={ENV.GOOGLE_CLIENT_ID!}>
         <SectionWrapper className="mb-36">
-          <Message />
+          <Message isMobile={isMobile} />
         </SectionWrapper>
       </GoogleOAuthProvider>
 
@@ -97,8 +136,8 @@ export default function Index() {
         <DigitalEnvelope />
       </SectionWrapper>
 
-      <div className="py-24 bg-[#EFEFEF] text-gray-700 relative text-center font-sans">
-        © 2022 by <span className="font-semibold">Fauzi</span>
+      <div className="py-24 bg-background text-gray-700 relative text-center font-sans">
+        © {thisYear} by <span className="font-semibold">Fauzi</span>
       </div>
 
       <MusicPlayer play={!openWelcome} />

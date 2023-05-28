@@ -59,6 +59,8 @@ const Countdown = memo(() => {
   );
 });
 
+Countdown.displayName = "Countdown";
+
 interface NumberCardProps {
   number: number;
   label: string;
@@ -74,5 +76,7 @@ const NumberCard = memo(({ number, label }: NumberCardProps) => {
     </div>
   );
 });
+
+NumberCard.displayName = "NumberCard";
 
 export default Countdown;

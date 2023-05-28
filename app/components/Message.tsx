@@ -1,13 +1,23 @@
-import { Fragment, memo, useEffect, useRef, useState } from "react";
-import Skeleton from "react-loading-skeleton";
-import { useFetcher, useLoaderData } from "remix";
-import { LoaderDataType } from "~/controls";
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import type { LoaderDataType } from "~/controls";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 
 const PER_PAGE = 5;
 
-const Message = memo(() => {
+interface MessageProps {
+  isMobile: boolean;
+}
+
+const Message = ({ isMobile }: MessageProps) => {
   const { messages } = useLoaderData<LoaderDataType>();
   const fetcher = useFetcher<{ ok: boolean }>();
   const formRef = useRef<HTMLFormElement>(null);
@@ -35,21 +45,26 @@ const Message = memo(() => {
 
   const scrollTop = () => {
     if (messagesRef.current) {
-      messagesRef.current.scrollIntoView();
+      messagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
-    scrollTop();
-  };
+  const onChangePage = useCallback(
+    (newPage: number) => {
+      setPage(newPage);
+      if (isMobile) {
+        scrollTop();
+      }
+    },
+    [isMobile]
+  );
 
   useEffect(() => {
     if (fetcher.data?.ok && fetcher.state === "loading") {
       formRef.current?.reset();
       onChangePage(0);
     }
-  }, [fetcher]);
+  }, [fetcher, onChangePage]);
 
   const sendMessage = useGoogleLogin({
     onSuccess: async (res) => {
@@ -117,28 +132,31 @@ const Message = memo(() => {
         <div className="w-full md:w-1/2 px-4" ref={messagesRef}>
           <div className="pt-4">
             {fetcher.state === "loading" && (
-              <div className="mb-5">
-                <h5>
-                  <strong>
-                    <Skeleton width={120} />
-                  </strong>
-                </h5>
-                <p>
-                  <Skeleton width={200} />
-                </p>
+              <div className="mb-5 animate-pulse">
+                <div className="h-[22.39px] w-[120px] bg-background mb-2 rounded-md" />
+                <div className="h-[20px] w-[300px] bg-background rounded-md" />
               </div>
             )}
 
-            {messagesDisplay.map((message, i) => (
-              <div className="mb-7 md:mb-5" key={i}>
-                <h5 className="font-black font-sans text-gray-700 mb-1">
-                  {message.name}
-                </h5>
-                <p className="whitespace-pre-wrap font-sans text-gray-800 leading-6">
-                  {message.message}
-                </p>
-              </div>
-            ))}
+            {messagesDisplay.map((message, i) => {
+              if (
+                fetcher.state === "loading" &&
+                i === messagesDisplay.length - 1
+              ) {
+                return null;
+              }
+
+              return (
+                <div className="mb-7 md:mb-5" key={i}>
+                  <h5 className="font-black font-sans text-gray-700 mb-1">
+                    {message.name}
+                  </h5>
+                  <p className="whitespace-pre-wrap font-sans text-gray-800 leading-6">
+                    {message.message}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {/* PAGINATION */}
@@ -211,6 +229,6 @@ const Message = memo(() => {
       </div>
     </div>
   );
-});
+};
 
-export default Message;
+export default memo(Message);

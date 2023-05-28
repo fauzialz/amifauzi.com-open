@@ -42,7 +42,8 @@ const LocationMap = () => {
                 <a
                   href={MAP_REDIRECT_URL}
                   target="_blank"
-                  className="px-5 py-2 transition-all text-lg font-semibold rounded-md bg-[#CE7BB0] hover:bg-[#A267AC] outline-[#6867AC] text-white outline-4 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                  className="px-5 py-2 transition-all text-lg font-semibold rounded-md bg-contrast hover:bg-contrast-2 outline-contrast-3 text-white outline-4 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                  rel="noreferrer"
                 >
                   Buka Map
                 </a>

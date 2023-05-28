@@ -1,4 +1,5 @@
-import { google, sheets_v4 } from "googleapis";
+import { google } from "googleapis";
+import type { sheets_v4 } from "googleapis";
 
 export const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
@@ -17,8 +18,7 @@ export const getAuthToken = async () => {
     },
   });
 
-  const authToken = await auth.getClient();
-  return authToken;
+  return auth;
 };
 
 let sheets: sheets_v4.Sheets | undefined = undefined;
